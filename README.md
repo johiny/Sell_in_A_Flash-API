@@ -1,2 +1,3 @@
 # Sell_in_A_Flash-API
-Backend de SF
+-Creación de Api para conectar el frontend de SF con la Database. 
+Backend de SF🚀
