@@ -1,13 +1,19 @@
 {
-  "name": "SF-API",
+  "name": "SF_API",
   "version": "1.0.0",
   "description": "SF Backend",
   "main": "index.js",
   "repository": "https://github.com/johiny/Sell_in_A_Flash-API.git",
   "author": "Johiny <johiny7@live.com>",
   "license": "MIT",
-  "type": "module" ,
+  "type": "module",
   "dependencies": {
     "express": "^4.17.1"
+  },
+  "scripts": {
+    "start": "nodemon server.js"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.14"
   }
 }
