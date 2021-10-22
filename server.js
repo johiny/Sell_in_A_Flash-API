@@ -14,6 +14,7 @@ const mongo = new MongoClient(connectionstring, {
 let connection;
 
 const app = Express();
+app.use(Express.json());
 
 app.use(Express.json());
 app.use(Cors());
@@ -76,3 +77,24 @@ const main = () => {
 };
 
 main();
+    //enviar vehiculo a la base de datos
+    const datosProductos = req.body;
+    console.log('llaves: ',Object.keys(datosProductos));
+    try {
+        if (
+        Object.keys(datosProductos).includes("id") && 
+        Object.keys(datosProductos).includes("vendedor") &&
+        Object.keys(datosProductos).includes("nombre") &&
+        Object.keys(datosProductos).includes("marca") &&
+        Object.keys(datosProductos).includes("precio") 
+        ) {
+            res.sendStatus(200); 
+        }
+        else{
+            res.sendStatus(500);
+        }
+    } catch{
+        res.sendStatus(500);
+    }
+})
+app.listen(5000,() => {console.log("estoy escuchando desde el backend!")})
