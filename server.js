@@ -1,10 +1,13 @@
 import  Express  from "express";
-import { MongoClient } from "mongodb";
-import Cors from 'cors'
+import { MongoClient, ObjectId } from "mongodb";
+import Cors from 'cors';
+import dotenv from 'dotenv';
 
 //Se crean las variables y objetos para poder implementar express y mongodb
 
-const connectionstring = ''
+
+dotenv.config({path:'./.env'});
+const connectionstring = process.env.DATA_URL;
 
 const mongo = new MongoClient(connectionstring, {
     useNewUrlParser: true,
@@ -23,8 +26,7 @@ app.use(Cors());
 
 app.get("/Ventas", (req,res) => {
 
-    connection
-    .collection("Ventas")
+    connection.collection("Ventas")
     .find({})
     .toArray((err,result) => {
         if (err){
@@ -69,7 +71,7 @@ const main = () => {
         else{
         connection = db.db("SellInAFlash");
         console.log("conexion exitosa!")
-        return app.listen(5000,() => {
+        return app.listen(process.env.PORT,() => {
             console.log("estoy escuchando desde el backend!")
         });
         }
@@ -96,5 +98,5 @@ main();
     } catch{
         res.sendStatus(500);
     }
-})
-app.listen(5000,() => {console.log("estoy escuchando desde el backend!")})
+
+app.listen(process.env.PORT,() => {console.log("estoy escuchando desde el backend!")})
