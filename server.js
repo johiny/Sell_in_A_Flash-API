@@ -1,10 +1,10 @@
 import  Express  from "express";
-import { MongoClient } from "mongodb";
+import { MongoClient, ObjectId } from "mongodb";
 import Cors from 'cors'
 
 //Se crean las variables y objetos para poder implementar express y mongodb
 
-const connectionstring = ''
+const connectionstring = 'mongodb+srv://johiny:megumin@sforigin.qw0dj.mongodb.net/myFirstDatabase?retryWrites=true&w=majority'
 
 const mongo = new MongoClient(connectionstring, {
     useNewUrlParser: true,
@@ -57,6 +57,42 @@ app.post("/Ventas/Newventa",(req,res) => {
     })
 });
 
+app.patch("/Ventas/Updateventa",(req,res) => {
+    const edit = req.body
+    const filtroventas = {_id : new ObjectId(edit._id)}
+    const operation = {$set : edit,}
+    delete edit._id;
+    connection
+    .collection("Ventas")
+    .findOneAndUpdate(filtroventas,operation, (err,result) => {
+        if(err)
+        {
+            res.status(500).send("error terrible editando la base de datos",err)
+            return false;
+        }
+        else{
+            res.status(200).send("venta actualizada correctamente!")
+        }
+    })
+})
+
+app.delete("/Ventas/Deleteventa",(req,res) => {
+    const filtroventas = {_id : new ObjectId(req.body._id)}
+    connection
+    .collection("Ventas")
+    .deleteOne(filtroventas, (err,result) => {
+        if(err)
+        {
+            res.status(500).send("error terrible borrando venta de la base de datos",err)
+            return false;
+        }
+        else{
+            res.status(200).send("venta borrada correctamente!")
+        }
+    })
+})
+
+
 // inicia el servidor, si se conecta a la base de datos envia un mensaje en la terminal y se pone a escuchar un puerto, de otra manera lanza error
 
 const main = () => {
@@ -76,25 +112,4 @@ const main = () => {
     });
 };
 
-main();
-    //enviar vehiculo a la base de datos
-    const datosProductos = req.body;
-    console.log('llaves: ',Object.keys(datosProductos));
-    try {
-        if (
-        Object.keys(datosProductos).includes("id") && 
-        Object.keys(datosProductos).includes("vendedor") &&
-        Object.keys(datosProductos).includes("nombre") &&
-        Object.keys(datosProductos).includes("marca") &&
-        Object.keys(datosProductos).includes("precio") 
-        ) {
-            res.sendStatus(200); 
-        }
-        else{
-            res.sendStatus(500);
-        }
-    } catch{
-        res.sendStatus(500);
-    }
-})
-app.listen(5000,() => {console.log("estoy escuchando desde el backend!")})
+main ();
