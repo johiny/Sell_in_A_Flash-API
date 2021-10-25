@@ -4,7 +4,7 @@ import Cors from 'cors'
 
 //Se crean las variables y objetos para poder implementar express y mongodb
 
-const connectionstring = ''
+const connectionstring = 'mongodb+srv://johiny:megumin@sforigin.qw0dj.mongodb.net/myFirstDatabase?retryWrites=true&w=majority'
 
 const mongo = new MongoClient(connectionstring, {
     useNewUrlParser: true,
