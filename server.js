@@ -1,21 +1,11 @@
 import  Express  from "express";
-import { MongoClient, ObjectId } from "mongodb";
 import Cors from 'cors'
 import dotenv from "dotenv"
-
+import {bdConnection,getDB } from "./db/db.js"
 
 dotenv.config({path:"./.env"})
+
 //Se crean las variables y objetos para poder implementar express y mongodb
-
-const connectionstring = process.env.DATABASE_URL;
-
-const mongo = new MongoClient(connectionstring, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-});
-
-let connection;
-
 const app = Express();
 app.use(Express.json());
 
@@ -25,7 +15,7 @@ app.use(Cors());
 // Obtiene las ventas de la base de datos
 
 app.get("/Ventas", (req,res) => {
-
+    const connection = getDB();
     connection
     .collection("Ventas")
     .find({})
@@ -44,7 +34,7 @@ app.get("/Ventas", (req,res) => {
 
 app.post("/Ventas/Newventa",(req,res) => {
     const venta = req.body;
-
+    const connection = getDB();
     connection
     .collection("Ventas")
      .insertOne(venta,(err,result) => {
@@ -65,6 +55,8 @@ app.patch("/Ventas/Updateventa",(req,res) => {
     const filtroventas = {_id : new ObjectId(edit._id)}
     const operation = {$set : edit,}
     delete edit._id;
+
+    const connection = getDB();
     connection
     .collection("Ventas")
     .findOneAndUpdate(filtroventas,operation, (err,result) => {
@@ -81,6 +73,8 @@ app.patch("/Ventas/Updateventa",(req,res) => {
 
 app.delete("/Ventas/Deleteventa",(req,res) => {
     const filtroventas = {_id : new ObjectId(req.body._id)}
+
+    const connection = getDB();
     connection
     .collection("Ventas")
     .deleteOne(filtroventas, (err,result) => {
@@ -99,20 +93,9 @@ app.delete("/Ventas/Deleteventa",(req,res) => {
 // inicia el servidor, si se conecta a la base de datos envia un mensaje en la terminal y se pone a escuchar un puerto, de otra manera lanza error
 
 const main = () => {
-    
-    mongo.connect((err,db) => {
-        if (err) {
-            console.error("error terrible conectandose a la base de datos",err)
-            return false
-        }
-        else{
-        connection = db.db("SellInAFlash");
-        console.log("conexion exitosa!")
-        return app.listen(process.env.PORT,() => {
-            console.log("estoy escuchando desde el backend!")
+    return app.listen(process.env.PORT,() => {
+        console.log(`estoy escuchando el puerto ${process.env.PORT} desde el backend!`)
         });
-        }
-    });
 };
 
-main ();
+bdConnection(main);
