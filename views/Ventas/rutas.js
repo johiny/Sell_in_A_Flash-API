@@ -1,6 +1,4 @@
 import Express from "express"
-import {getDB} from "../../db/db.js"
-import {ObjectId} from "mongodb";
 import { obtenerTodasLasVentas, guardarVenta, editarVenta, borrarVenta } from "../../controllers/Ventas/controller.js";
 
 const rutasVentas = Express.Router();
@@ -24,18 +22,18 @@ rutasVentas.route("/Ventas").get((req,res) => {
 
 
 // Envia una venta a la base de datos
-rutasVentas.route("/Ventas/Newventa").post((req,res) => {
+rutasVentas.route("/Ventas").post((req,res) => {
     guardarVenta(req.body,genericCallback(res))
 });
 
 // Edita una venta 
-rutasVentas.route("/Ventas/Updateventa").patch((req,res) => {
-    editarVenta(req.body,genericCallback(res))
+rutasVentas.route("/Ventas/:id").patch((req,res) => {
+    editarVenta(req.params.id,req.body,genericCallback(res))
 });
 
 //Borra una venta
-rutasVentas.route("/Ventas/Deleteventa").delete((req,res) => {
-    borrarVenta(req.body,genericCallback(res))
+rutasVentas.route("/Ventas/:id").delete((req,res) => {
+    borrarVenta(req.params.id,genericCallback(res))
 });
 
 export default rutasVentas;

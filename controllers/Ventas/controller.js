@@ -12,21 +12,20 @@ const guardarVenta = async (venta,callback) => {
 };
 
 
-const editarVenta = async (venta,callback) => {
+const editarVenta = async (id,venta,callback) => {
     const connection = getDB();
 
-    const filtroventas = {_id : new ObjectId(venta._id)}
+    const filtroventas = {_id : new ObjectId(id)}
     const operation = {$set : venta,}
-    delete venta._id;
 
     await connection.collection("Ventas").findOneAndUpdate(filtroventas,operation,callback)
 };
 
-const borrarVenta = async (venta,callback) => {
+const borrarVenta = async (id,callback) => {
     const connection = getDB();
     
-    const filtroventas = {_id : new ObjectId(venta._id)}
-    connection.collection("Ventas").deleteOne(filtroventas,callback)
+    const filtroventas = {_id : new ObjectId(id)}
+    await connection.collection("Ventas").deleteOne(filtroventas,callback)
 };
 
 
