@@ -3,19 +3,19 @@ import { getDB } from '../../db/db.js';
 import jwt_decode from 'jwt-decode';
 
 const queryAllUsers = async (callback) => {
-  const baseDeDatos = getDB();
+  const SFBD = getDB();
   console.log('query');
-  await baseDeDatos.collection('usuario').find({}).limit(50).toArray(callback);
+  await SFBD.collection('usuario').find({}).limit(50).toArray(callback);
 };
 
 const crearUsuario = async (datosUsuario, callback) => {
-  const baseDeDatos = getDB();
-  await baseDeDatos.collection('usuario').insertOne(datosUsuario, callback);
+  const SFBD = getDB();
+  await SFBD.collection('usuario').insertOne(datosUsuario, callback);
 };
 
 const consultarUsuario = async (id, callback) => {
-  const baseDeDatos = getDB();
-  await baseDeDatos.collection('usuario').findOne({ _id: new ObjectId(id) }, callback);
+  const SFBD = getDB();
+  await SFBD.collection('usuario').findOne({ _id: new ObjectId(id) }, callback);
 };
 
 const consultarOCrearUsuario = async (req, callback) => {
@@ -26,8 +26,8 @@ const consultarOCrearUsuario = async (req, callback) => {
   console.log(user);
 
   // 6.2. con el correo del usuario o con el id de auth0, verificar si el usuario ya esta en la bd o no
-  const baseDeDatos = getDB();
-  await baseDeDatos.collection('usuario').findOne({ email: user.email }, async (err, response) => {
+  const SFBD = getDB();
+  await SFBD.collection('usuario').findOne({ email: user.email }, async (err, response) => {
     console.log('response consulta bd', response);
     if (response) {
       // 7.1. si el usuario ya esta en la BD, devuelve la info del usuario
@@ -48,16 +48,16 @@ const editarUsuario = async (id, edicion, callback) => {
   const operacion = {
     $set: edicion,
   };
-  const baseDeDatos = getDB();
-  await baseDeDatos
+  const SFBD = getDB();
+  await SFBD
     .collection('usuario')
     .findOneAndUpdate(filtroUsuario, operacion, { upsert: true, returnOriginal: true }, callback);
 };
 
 const eliminarUsuario = async (id, callback) => {
   const filtroUsuario = { _id: new ObjectId(id) };
-  const baseDeDatos = getDB();
-  await baseDeDatos.collection('usuario').deleteOne(filtroUsuario, callback);
+  const SFBD = getDB();
+  await SFBD.collection('usuario').deleteOne(filtroUsuario, callback);
 };
 
 export {

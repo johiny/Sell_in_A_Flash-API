@@ -13,7 +13,7 @@ import {auth} from 'express-oauth2-jwt-bearer';
 //Se crean las variables y objetos para poder implementar express y mongodb
 
 const app = express();
-/* const { auth } = require('express-oauth2-jwt-bearer'); */
+
 app.use(express.json());
 app.use(Cors());
 app.use(rutasVentas);
@@ -26,7 +26,7 @@ var jwtCheck = jwt({
         jwksRequestsPerMinute: 5,
         jwksUri: 'https://dev-0skfin92.us.auth0.com/.well-known/jwks.json'
   }),
-  audience: 'api-autenticacion-sellinaflash',
+  audience: 'https://dev-0skfin92.us.auth0.com/api/v2/',
   issuer: 'https://dev-0skfin92.us.auth0.com/',
   algorithms: ['RS256']
 }); 
