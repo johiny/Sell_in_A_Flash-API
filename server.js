@@ -1,21 +1,23 @@
-import  Express  from "express";
+import  express  from "express";
 import Cors from 'cors'
 import dotenv from "dotenv"
 import {bdConnection} from "./db/db.js"
-import rutasVentas from "./views/Ventas/rutas.js"
+import rutasVentas from "./views/Ventas/rutas.js";
+import rutasUsuario from "./views/usuarios/rutas.js";
 dotenv.config({path:"./.env"})
 import jwt from 'express-jwt';
 import jwks from 'jwks-rsa';
-
+import {auth} from 'express-oauth2-jwt-bearer';
 
 
 //Se crean las variables y objetos para poder implementar express y mongodb
-const express = require('express');
+
 const app = express();
-const { auth } = require('express-oauth2-jwt-bearer');
+/* const { auth } = require('express-oauth2-jwt-bearer'); */
 app.use(express.json());
 app.use(Cors());
 app.use(rutasVentas);
+app.use(rutasUsuario);
 
 var jwtCheck = jwt({
     secret: jwks.expressJwtSecret({
