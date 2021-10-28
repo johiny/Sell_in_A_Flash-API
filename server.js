@@ -14,6 +14,8 @@ import {auth} from 'express-oauth2-jwt-bearer';
 
 const app = express();
 
+const port = process.env.PORT || 5000;
+
 app.use(express.json());
 app.use(Cors());
 app.use(rutasVentas);
@@ -38,8 +40,8 @@ app.use(jwtCheck);
 // inicia el servidor, si se conecta a la base de datos envia un mensaje en la terminal y se pone a escuchar un puerto, de otra manera lanza error
 
 const main = () => {
-    return app.listen(process.env.PORT,() => {
-        console.log(`estoy escuchando el puerto ${process.env.PORT} desde el backend!`)
+    return app.listen(port,() => {
+        console.log(`estoy escuchando el puerto ${port} desde el backend!`)
         });
 };
 
