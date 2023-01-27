@@ -18,7 +18,7 @@ const port = process.env.PORT || 5000;
 
 app.use(express.json());
 app.use(Cors({
-    origin: ['http://localhost:3000']
+    origin: ['http://localhost:3000', process.env.FRONT_END_URL]
 }));
 app.use(rutasVentas);
 app.use(rutasUsuario);
